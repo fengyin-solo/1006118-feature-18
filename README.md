@@ -69,3 +69,18 @@ npm run build
   `frontend/src/data/seed.ts`。
 - 状态流转只允许在 `local-service.ts` 里改，页面组件不做业务判断。
 - 想回到初始数据：清掉浏览器里 `shield-tunnel-construction:entries` 这一项，或调用 `resetModule(模块)`。
+
+## 管线探查的查询与权限
+
+- 列表查询统一走 `queryEntries(模块, 条件)`：管线类型、权属单位精确筛，埋设深度、与隧道净距按
+  数值范围过滤，多个条件叠加取交集；分页只改页码，条件原样保留（同步在地址栏 query 里）。
+  一条都命中不了时，`explainEmptyQuery` 会逐格指出哪个条件没对上。
+- 埋设深度、与隧道净距以**探查日期最新的探查记录**为准；历次探查（含历史台账里的文本读数）
+  都留在 `utility-survey` 探查记录里，详情页可查。存量管线首次打开时按探查日期自动迁移补录
+  （`frontend/src/data/utility-migration.ts`）。
+- 顶栏可切换当前单位：迁改方案只有该管线的权属单位能提交，探查登记与状态流转限项目部或
+  权属单位，其它单位只能查看，跨单位的改动一律退回。同一条记录重复提交只记一次，
+  写失败不会落半条（`saveAll` 先落盘再换内存）。
+- 探查结论（状态流转）同步到进度节点页的「管线迁改待办」：未恢复管线数两边都从
+  `listUnrestoredPipelines()` 取，必然对得上。
+- 数据层验收：`cd frontend && npm run verify`。

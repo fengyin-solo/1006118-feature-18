@@ -24,6 +24,41 @@
       </span>
     </p>
 
+    <section class="panel todo-panel">
+      <h3 class="panel-title">管线迁改待办</h3>
+      <p class="panel-desc">
+        探查结论同步到这里：未恢复管线 {{ unrestoredRows.length }} 条，与管线探查页同一份取数。
+        <RouterLink class="link" :to="{ path: '/utility' }">前往管线探查处理</RouterLink>
+      </p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>管线编号</th>
+            <th>管线类型</th>
+            <th>权属单位</th>
+            <th>探查日期</th>
+            <th>当前状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in unrestoredRows" :key="String(item.id)">
+            <td>
+              <RouterLink class="link" :to="{ name: 'utility-detail', params: { id: Number(item.id) } }">
+                {{ item['管线编号'] }}
+              </RouterLink>
+            </td>
+            <td>{{ item['管线类型'] }}</td>
+            <td>{{ item['权属单位'] }}</td>
+            <td>{{ item['探查日期'] || '—' }}</td>
+            <td>{{ item.status }}</td>
+          </tr>
+          <tr v-if="!unrestoredRows.length">
+            <td colspan="5" class="empty-state">管线全部已恢复，没有迁改待办</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
     <form class="filter-bar" @submit.prevent="reload">
       <label v-for="field in filterFields" :key="field" class="filter-item">
         <span>{{ field }}</span>
@@ -76,6 +111,7 @@ import { computed, onMounted, ref } from 'vue'
 import {
   downloadEntries,
   listEntries,
+  listUnrestoredPipelines,
   moduleMeta,
   runAction as applyAction,
 } from '@/api/local-service'
@@ -91,6 +127,7 @@ const rows = ref<EntryRow[]>([])
 const total = ref(0)
 const errorMessage = ref('')
 const filters = ref<Record<string, string>>({})
+const unrestoredRows = ref<EntryRow[]>([])
 const filterFields = columns.slice(0, 3)
 const statusSummary = computed(() =>
   statuses.map((status: string) => ({
@@ -128,6 +165,7 @@ function reload() {
     const payload = listEntries(meta.key, filters.value)
     rows.value = payload.items
     total.value = payload.total
+    unrestoredRows.value = listUnrestoredPipelines()
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : '进度节点列表读取失败'
   }

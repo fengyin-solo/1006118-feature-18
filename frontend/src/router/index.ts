@@ -14,6 +14,7 @@ const Mortar = () => import('@/views/mortar/index.vue')
 const Ventilation = () => import('@/views/ventilation/index.vue')
 const Building = () => import('@/views/building/index.vue')
 const Utility = () => import('@/views/utility/index.vue')
+const UtilityDetail = () => import('@/views/utility/detail.vue')
 const Progress = () => import('@/views/progress/index.vue')
 const Testing = () => import('@/views/testing/index.vue')
 const Drill = () => import('@/views/drill/index.vue')
@@ -37,6 +38,7 @@ const router = createRouter({
     { path: '/ventilation', name: 'ventilation', component: Ventilation },
     { path: '/building', name: 'building', component: Building },
     { path: '/utility', name: 'utility', component: Utility },
+    { path: '/utility/:id', name: 'utility-detail', component: UtilityDetail },
     { path: '/progress', name: 'progress', component: Progress },
     { path: '/testing', name: 'testing', component: Testing },
     { path: '/drill', name: 'drill', component: Drill },

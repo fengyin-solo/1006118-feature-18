@@ -35,3 +35,29 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .error-text { color: #b42318; }
 .status-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 10px; font-size: 12px; color: var(--muted); }
 .legend-item { background: #eef2f7; border-radius: 999px; padding: 2px 10px; }
+.status-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.tab-btn { border: 1px solid var(--border); background: #fff; border-radius: 999px; padding: 4px 14px; font-size: 13px; cursor: pointer; }
+.tab-btn.active { background: var(--brand); border-color: var(--brand); color: #fff; }
+.filter-item input, .filter-item select { border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px; font-size: 13px; }
+.range-inputs { display: flex; align-items: center; gap: 4px; }
+.range-inputs input { width: 76px; }
+.range-inputs em { color: var(--muted); font-style: normal; }
+.pager { display: flex; align-items: center; gap: 8px; }
+.pager select { border: 1px solid var(--border); border-radius: 6px; padding: 4px 6px; font-size: 12px; }
+.pager .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.miss-line { margin: 4px 0; color: #b42318; }
+.panel { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; }
+.panel-title { margin: 0 0 6px; font-size: 14px; }
+.panel-desc { margin: 0 0 8px; font-size: 12px; color: var(--muted); }
+.todo-panel .data-table { margin-top: 4px; }
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-bottom: 12px; }
+.detail-item { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; }
+.detail-label { display: block; font-size: 12px; color: var(--muted); }
+.detail-value { font-size: 14px; word-break: break-all; }
+.plan-text { background: #f8fafc; border-radius: 6px; padding: 8px 10px; font-size: 13px; }
+.plan-input { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 8px; font-size: 13px; margin-bottom: 8px; }
+.survey-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; margin-top: 10px; }
+.hint-text { font-size: 12px; color: var(--muted); }
+.notice-text { color: #067647; }
+.org-switch { margin-left: 10px; }
+.org-switch select { border: 1px solid var(--border); border-radius: 6px; padding: 3px 6px; font-size: 12px; margin-left: 4px; }

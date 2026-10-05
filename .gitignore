@@ -85,3 +85,6 @@ desktop.ini
 *.db
 *.pid
 *.seed
+
+# 验收脚本打包产物
+.verify.bundle.mjs
