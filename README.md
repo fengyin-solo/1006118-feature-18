@@ -69,3 +69,31 @@ npm run build
   `frontend/src/data/seed.ts`。
 - 状态流转只允许在 `local-service.ts` 里改，页面组件不做业务判断。
 - 想回到初始数据：清掉浏览器里 `shield-tunnel-construction:entries` 这一项，或调用 `resetModule(模块)`。
+
+## 管线探查的专项约定
+
+管线探查（`utility`）在通用台账之外有一套领域服务：`frontend/src/api/utility-service.ts`。
+管线探查页与进度节点页上的「迁改待办」挂的是同一个组件
+（`frontend/src/components/RelocationTodoPanel.vue`）和同一份取数实现，两处读到的
+未恢复管线数恒等。
+
+- **查询**：管线类型、权属单位为下拉筛选（权属单位 = 标准目录 + 台账历史单位）；
+  埋设深度、与隧道净距支持上下限过滤；条件叠加取交集。筛选条件与页码写在路由 query 里，
+  翻页、进详情、浏览器后退都原样保留。零命中时按格列出没对上的条件。
+- **净距口径**：以最新一条探查结论的实测净距为准，未测时取同条结论的设计净距，
+  都没有时沿用历史台账值（兼容历史探查记录）。
+- **进度**：待探查/已探明/迁改中/已恢复一键切换，角标数始终按全量台账统计。
+- **权限**：顶栏可切换值班单位。迁改方案只有该管线的权属单位能提交，施工单位
+  （中铁盾构项目部）负责探查结论与状态流转，监理只读；跨单位提交一律退回。
+- **去重与原子性**：同一管线重复递相同探查结论/相同方案只记一次；先完成全部校验，
+  再把行表、探查记录、方案、待办拼成整份库一次写入 localStorage，写不成不落半条。
+- **存量迁移**：localStorage 带 schema 版本号（`shield-tunnel-construction:schema-version`），
+  v1 老库首次打开按探查日期补录（基准日 2026-09-15），占位样例换成真实台账并补历史探查结论。
+
+业务规则的命令行校验（纯 Node，无需浏览器）：
+
+```bash
+cd frontend
+node scripts/run-verify.cjs       # 62 项取数/权限/去重/同步/原子性断言
+node scripts/verify-migration.cjs # 17 项 v1 -> v2 存量迁移断言
+```

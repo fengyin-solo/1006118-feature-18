@@ -11,7 +11,15 @@
     <main class="app-main">
       <header class="app-head">
         <span class="head-desc">面向盾构机台账、掘进环次、管片拼装、同步注浆、渣土外运、地表沉降监测与轴线纠偏的一体化盾构隧道施工管理平台。</span>
-        <span class="head-user">当前值班：{{ store.operator }} · {{ store.shiftLabel }}</span>
+        <span class="head-user">
+          当前值班：{{ store.operator }} · {{ store.shiftLabel }}
+          <label class="org-switch">
+            值班单位
+            <select :value="store.org" @change="store.setOrg(($event.target as HTMLSelectElement).value)">
+              <option v-for="org in ORG_OPTIONS" :key="org" :value="org">{{ org }}</option>
+            </select>
+          </label>
+        </span>
       </header>
       <RouterView />
     </main>
@@ -19,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { useSessionStore } from '@/stores/session'
+import { ORG_OPTIONS, useSessionStore } from '@/stores/session'
 
 const store = useSessionStore()
 

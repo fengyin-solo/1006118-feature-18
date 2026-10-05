@@ -67,6 +67,8 @@
       <span>共 {{ total }} 条进度节点记录</span>
       <span v-if="errorMessage" class="error-text">{{ errorMessage }}</span>
     </footer>
+
+    <RelocationTodoPanel :compact="false" />
   </section>
 </template>
 
@@ -79,13 +81,21 @@ import {
   moduleMeta,
   runAction as applyAction,
 } from '@/api/local-service'
+import { unrecoveredCount } from '@/api/utility-service'
+import RelocationTodoPanel from '@/components/RelocationTodoPanel.vue'
 import type { EntryRow } from '@/data/types'
 
 const meta = moduleMeta('progress')
 const columns = ["节点编号", "节点名称", "计划完成日", "实际完成日", "计划掘进量", "实际掘进量", "偏差天数", "节点状态"]
 const actions = ["开始节点", "确认完成", "登记延期"]
 const statuses = ["未开始", "进行中", "已完成", "已延期"]
-const stats = [{"label": "进行中节点", "value": 0}, {"label": "已完成节点", "value": 0}, {"label": "延期节点", "value": 0}]
+// 统计卡固定读全量口径（未恢复管线总数），不受待办面板里的筛选影响。
+const stats = computed(() => [
+  { label: "进行中节点", value: 0 },
+  { label: "已完成节点", value: 0 },
+  { label: "延期节点", value: 0 },
+  { label: "迁改待办未恢复管线", value: unrecoveredCount() },
+])
 
 const rows = ref<EntryRow[]>([])
 const total = ref(0)
